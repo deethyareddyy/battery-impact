@@ -26,6 +26,6 @@ function getWattage(diff, wattage_rate) {
     return diff * wattage_rate;
 };
 
-function getRemainingYears(life_cycles, age) {
-    return 5 - life_cycles / 1000 - age;
+function getRemainingYears(age) {
+    return 5 - 1000 * age;
 }
