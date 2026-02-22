@@ -1,7 +1,6 @@
-/* Green background and header */
 body {
   background-color: #7cba7d;
-  font-family: Arial, sans-serif;
+  font-family: Georgia, serif;
   color: #fff;
   display: flex;
   flex-direction: column;
@@ -16,8 +15,26 @@ header h1 {
   font-size: 3rem;
   font-weight: bold;
 }
+.inputField {
+  border-radius: 10px;
+  padding: 10px;
+  font-family: Georgia;
 
-/* Card containers */
+  border: 1px solid #443d3d;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.inputField:focus {
+  border-color: #2ecc71;
+  box-shadow: 0 0 3px 1px #2ecc71;
+}
+.dropdown {
+  border-radius: 10px;
+  font: Georgia;
+  padding: 10px
+}
 .card {
   background: rgba(255, 255, 255, 0.1);
   padding: 20px 30px;
@@ -26,7 +43,6 @@ header h1 {
   text-align: center;
   box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
-/* Buttons */
 .btn {
   background-color: #fff;
   color: #314e31;
@@ -37,13 +53,15 @@ header h1 {
   font-size: 1rem;
   cursor: pointer;
   transition: 0.3s;
+  border-color: #314e31;
+  font: Georgia;
 }
 
 .btn:hover {
-  background-color: #f0f0f0;
+  background-color: #aae3b6;
 }
 
-/* Pie chart and energy info */
+
 #output {
   margin-top: 20px;
 }
@@ -51,4 +69,94 @@ header h1 {
 #energyInfo {
   margin-top: 15px;
   font-weight: bold;
+}
+
+#continentFacts {
+  font-size: 0.95rem;
+  color: #e8ffe8;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 10px 12px;
+  border-radius: 8px;
+}
+.appLayout{
+  display:flex;
+  gap:16px;
+  align-items:flex-start;
+}
+
+.mainPane{
+  flex: 1 1 auto;
+  min-width: 320px;
+}
+
+.sidePane{
+  width: 360px;
+  max-width: 40%;
+  padding: 14px;
+  border-radius: 12px;
+
+  background: linear-gradient(
+    180deg,
+    #0f3d2e,
+    #145c43
+  );
+
+  border: 1px solid #1e6b53;
+  color: #eafff2;
+  text-align: left;
+}
+
+.sidePane h3{
+  margin: 0 0 10px 0;
+}
+
+.tipBlock{
+  margin: 12px 0;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(0,0,0,0.08);
+}
+
+.tipBlock h4{
+  margin: 0 0 6px 0;
+  font-size: 14px;
+}
+
+.tipBlock ul{
+  margin: 0;
+  padding-left: 18px;
+}
+
+.miniNote{
+  margin-top: 12px;
+  font-size: 12px;
+  opacity: 0.85;
+}
+
+#batteryChart {
+  max-width: 320px;
+  width: 100%;
+  margin: 0 auto;
+  display: block;
+  filter: drop-shadow(0 0 16px rgba(124, 255, 124, 0.2));
+  border: 10px;
+  display: none;
+}
+
+#usageChart {
+  background-color: rgb(186, 255, 191);
+  margin: 10%;
+  color: black;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  padding: 20px;
+  display: none;
+}
+@media (max-width: 900px){
+  .appLayout{
+    flex-direction: column;
+  }
+  .sidePane{
+    width: 100%;
+    max-width: 100%;
+  }
 }

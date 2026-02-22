@@ -7,10 +7,34 @@ document.addEventListener("DOMContentLoaded", () => {
   const deviceAgeEl = document.getElementById("deviceAgeYears");
   const stateEl = document.getElementById("stateSelect");
   const deviceMsgEl = document.getElementById("deviceMsg");
+  const remainingYearsEl = document.getElementById("remainingYearsMsg");
   
   const signupContainer = document.getElementById("signupContainer");
   const deviceTypes = document.getElementById("deviceType");
   const ageInput = document.getElementById("deviceAgeYears");
+
+  const contSelect = document.getElementById("contSelect");
+const continentFactsEl = document.getElementById("continentFacts");
+
+const continentFacts = {
+  NA: "Annual electricity consumption: ~5,381 TWh<br>Cost per year: $699,530,000,000 (~$700 billion)",
+  SA: "Annual electricity consumption: ~1,285 TWh<br>Cost per year: $154,200,000,000 (~$154 billion)",
+  AS: "Annual electricity consumption: ~17,093 TWh<br>Cost per year: $2,222,090,000,000 (~$2.2 trillion)",
+  ER: "Annual electricity consumption: ~4,510 TWh<br>Cost per year: $1,037,300,000,000 (~$1.04 trillion)",
+  AF: "Annual electricity consumption: ~937 TWh<br>Cost per year: $112,440,000,000 (~$112 billion)",
+  OC: "Annual electricity consumption: ~329 TWh<br>Cost per year: $65,800,000,000 (~$66 billion)"
+};
+
+contSelect.addEventListener("change", () => {
+  const value = contSelect.value;
+
+  if (!value) {
+    continentFactsEl.innerHTML = "";
+    return;
+  }
+
+  continentFactsEl.innerHTML = continentFacts[value];
+});
 
   // Signup
   signupBtn.addEventListener("click", () => {
@@ -19,6 +43,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const deviceType = deviceTypes.value;
     const ageValue = ageInput.value;
+    const ageNumber = Number(ageValue);
+    const remainingYears = getRemainingYears(ageNumber);
     auth.createUserWithEmailAndPassword(email, password)
       .then((userCredential) => {
         const user = userCredential.user;
@@ -32,6 +58,9 @@ document.addEventListener("DOMContentLoaded", () => {
           state: null,
           email: email
         });
+        if (remainingYearsEl) {
+          remainingYearsEl.textContent = `Estimated remaining lifespan: ${remainingYears} years`;
+        }
 
         showApp();
       })
@@ -41,43 +70,8 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   });
 
-    function showDeviceMsg(text, isError = true) {
-    if (!deviceMsgEl) return;
-    deviceMsgEl.textContent = text;
-    deviceMsgEl.style.color = isError ? "crimson" : "inherit";
-  }
+ 
 
-  function validateInputs() {
-    const deviceType = deviceTypeEl?.value?.trim();
-    const ageStr = deviceAgeEl?.value?.trim();
-    const state = stateEl?.value?.trim();
-
-    if (!deviceType) {
-      showDeviceMsg("Please select your device model.");
-      return false;
-    }
-
-    if (!ageStr) {
-      showDeviceMsg("Please enter how long you have used this laptop.");
-      return false;
-    }
-
-    const age = Number(ageStr);
-    if (Number.isNaN(age) || age < 0) {
-      showDeviceMsg("Years must be a valid number greater than or equal to 0.");
-      return false;
-    }
-
-    if (!state) {
-      showDeviceMsg("Please select your state.");
-      return false;
-    }
-
-    showDeviceMsg(""); // clear message
-    return true;
-  }
-
-  // Login
   loginBtn.addEventListener("click", () => {
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
@@ -94,9 +88,10 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   });
 
-  function showApp() {
+  async function showApp() {
     authContainer.style.display = "none";
     appContainer.style.display = "block";
-    console.log("app is running")
+    console.log("app is running");
   }
+
 });

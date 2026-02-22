@@ -5,18 +5,17 @@
   <meta charset="UTF-8" />
   <title>Battery Impact</title>
   <link rel="stylesheet" href="style.css" />
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Pie chart -->
-</head>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> 
 
 <body>
   <header>
-    <h1>Battery Impact</h1>
+    <h1>Battery Impact 🔋</h1>
   </header>
 
   <div id="authContainer" class="card">
     <h2>Login or Sign Up</h2>
-    <input type="email" id="email" placeholder="Email" />
-    <input type="password" id="password" placeholder="Password" />
+    <input type="email" id="email" placeholder="Email" class="inputField"/>
+    <input type="password" id="password" placeholder="Password" class="inputField"/>
     <button id="loginBtn" class="btn">Log In</button>
 
     <div id="signupContainer" class="card">
@@ -24,7 +23,7 @@
       <div id="deviceForm" style="margin: 12px 0; display:flex; flex-direction:column; gap:10px;">
         <label>
           Select your device:
-          <select id="deviceType" style="margin-left:8px;">
+          <select id="deviceType" style="margin-left:8px;" class="dropdown">
             <option value="">-- Select --</option>
             <option value="Smaller MacBook Air">Smaller MacBook Air</option>
             <option value="Modern MacBook Air">Modern MacBook Air</option>
@@ -36,7 +35,7 @@
         <label>
           How long have you used this laptop? (years)
           <input id="deviceAgeYears" type="number" min="0" step="0.5" placeholder="e.g. 2"
-            style="margin-left:8px; width:120px;">
+            style="margin-left:8px; width:120px;" class="inputField">
         </label>
         <button id="signupBtn" class="btn">Sign Up</button>
       </div>
@@ -46,24 +45,83 @@
     <p id="deviceMsg" style="margin:0;"></p>
   </div>
 
-  <div id="appContainer" class="card" style="display:none;">
-    <button id="startBtn" class="btn">Start Tracking Battery</button>
+<div id="appContainer" class="card" style="display:none;">
+  <div class="appLayout">
+    <div class="mainPane">
+      <button id="startBtn" class="btn">Start Tracking Battery</button>
+      <p id="remainingYearsMsg" style="margin: 10px 0;"></p>
 
-    <div id="output" style="display:none;">
-      <canvas id="batteryChart" width="200" height="200"></canvas>
-      <p id="energyInfo"></p>
+      <div id="output" style="display:none;">
+        <canvas id="batteryChart" width="200" height="200"></canvas>
+        <p id="energyInfo"></p>
+      </div>
+
+      <label>
+        Select your continent:
+        <select id="contSelect" class="dropdown">
+          <option value="">--Select--</option>
+          <option value="NA">North America</option>
+          <option value="SA">South America</option>
+          <option value="AS">Asia</option>
+          <option value="ER">Europe</option>
+          <option value="AF">Africa</option>
+          <option value="OC">Oceania</option>
+        </select>
+      </label>
+      <p id="continentFacts" style="margin-top: 12px;"></p>
     </div>
 
-    <label>
-      Select your state:
-      <select id="stateSelect">
-        <option value="">--Select--</option>
-        <option value="CA">California</option>
-        <option value="NY">New York</option>
-        <option value="TX">Texas</option>
-      </select>
-    </label>
+    <aside class="sidePane">
+      <h3>How to Improve Battery Health (Real Tips)</h3>
+
+      <div class="tipBlock">
+        <h4>Charging habits that actually matter</h4>
+        <ul>
+          <li><b>Use Optimized Battery Charging</b> (macOS): it learns your routine and avoids sitting at 100% for hours.</li>
+          <li><b>Avoid leaving it at 100% constantly</b> if you stay plugged in all day—aim to unplug occasionally and let it drift down.</li>
+          <li><b>Don't deep-cycle daily</b>: frequent 0%→100% cycles wear batteries faster than partial top-ups.</li>
+        </ul>
+      </div>
+
+      <div class="tipBlock">
+        <h4>Heat is the silent battery killer</h4>
+        <ul>
+          <li><b>Keep it cool</b>: avoid blankets/soft beds; use a hard surface or stand.</li>
+          <li><b>While gaming / heavy tasks</b>, prefer a ventilated setup; heat accelerates battery aging.</li>
+          <li><b>Never leave it in a hot car</b> (temperature spikes do real damage).</li>
+        </ul>
+      </div>
+
+      <div class="tipBlock">
+        <h4>Reduce background drain (fast wins)</h4>
+        <ul>
+          <li><b>Browser tabs/extensions</b>: close unused tabs; some extensions keep CPUs awake.</li>
+          <li><b>Turn off keyboard backlight</b> when not needed.</li>
+          <li><b>Check Activity Monitor → Energy</b> to find “Energy Impact” hogs and quit them.</li>
+        </ul>
+      </div>
+
+      <div class="tipBlock">
+        <h4>Settings that move the needle</h4>
+        <ul>
+          <li><b>Lower brightness</b> 1-2 notches (display is often a top power draw).</li>
+          <li><b>Shorten screen timeout</b> and enable sleep.</li>
+          <li><b>Disable Wi-Fi/Bluetooth</b> when you truly don't need them (travel/lectures).</li>
+        </ul>
+      </div>
+
+      <div class="tipBlock">
+        <h4>Battery longevity checks</h4>
+        <ul>
+          <li><b>Battery Health</b>: System Settings → Battery → Battery Health (watch “Maximum Capacity”).</li>
+          <li><b>Cycle count</b>: track it over time; rapid growth often means heavy drain patterns.</li>
+        </ul>
+      </div>
+
+      <p class="miniNote">Tip: battery wear is mostly driven by <b>heat</b> + <b>time spent at very high charge</b> + <b>deep cycles</b>.</p>
+    </aside>
   </div>
+</div>
 
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
@@ -72,6 +130,8 @@
   <script src="firebase.js"></script>
   <script src="script.js"></script>
   <script src="tracker.js"></script>
+  <canvas id="usageChart" width="400" height="200"></canvas>
+  <canvas id="batteryChart"></canvas>
 </body>
 
 </html>

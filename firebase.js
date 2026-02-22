@@ -8,9 +8,9 @@ const firebaseConfig = {
   measurementId: "G-7SEQ1417HJ"
 };
 
-// Initialize Firebase using compat syntax
+
 firebase.initializeApp(firebaseConfig);
 
-// Services
+
 window.auth = firebase.auth();
 window.db = firebase.firestore();

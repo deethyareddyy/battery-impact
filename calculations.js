@@ -1,5 +1,4 @@
 function getWattageRate(device_type, age) {
-    //in watt hours
     console.log("Device info:" + device_type);
     let wattage;
     battery_capacity = 100 - 0.05 * age;
@@ -17,7 +16,7 @@ function getWattageRate(device_type, age) {
         wattage = 100;
       break;
     default:
-      return "No matching model found"; // A return statement also exits the switch
+      return "No matching model found";
   }
   return wattage;
 }
@@ -27,5 +26,5 @@ function getWattage(diff, wattage_rate) {
 };
 
 function getRemainingYears(age) {
-    return 5 - 1000 * age;
+    return 5 - age;
 }
