@@ -1,39 +1,114 @@
-const startBtn = document.getElementById("startBtn");
-const output = document.getElementById("output");
-const batteryInfo = document.getElementById("batteryInfo");
-const energyInfo = document.getElementById("energyInfo");
+document.addEventListener("DOMContentLoaded", () => {
+  const startBtn = document.getElementById("startBtn");
+  const output = document.getElementById("output");
+  const batteryInfo = document.getElementById("batteryInfo");
+  const energyInfo = document.getElementById("energyInfo");
+  const signupBtn = document.getElementById("signupBtn");
+  const loginBtn = document.getElementById("loginBtn");
+  const appContainer = document.getElementById("appContainer");
+  const authContainer = document.getElementById("authContainer");
 
-let startLevel = null;
+  signupBtn.addEventListener("click", () => {
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
 
-// Average phone battery capacity (Wh)
-const BATTERY_CAPACITY_WH = 12;
-const LITHIUM_PER_WH = 0.3; // grams (rough estimate)
+  auth.createUserWithEmailAndPassword(email, password)
+    .then((userCredential) => {
+      const user = userCredential.user;
+      console.log("Signed up:", user.uid);
 
-startBtn.addEventListener("click", async () => {
-  if (!("getBattery" in navigator)) {
-    alert("Battery information is not supported on this browser.");
-    return;
+      // Create Firestore document
+      db.collection("users").doc(user.uid).set({
+        lastBatteryLevel: null,
+        totalEnergyUsedWh: 0,
+        lastUpdated: Date.now(),
+        state: null,   // optional
+        email: email   // optional
+      });
+
+      showApp(); // show battery tracker UI
+    })
+    .catch((error) => {
+      console.error(error);
+      alert(error.message);  // ← shows a popup if signup fails
+    });
+});
+
+  loginBtn.addEventListener("click", () => {
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  auth.signInWithEmailAndPassword(email, password)
+    .then((userCredential) => {
+      const user = userCredential.user;
+      console.log("Logged in:", user.uid);
+      showApp();
+    })
+    .catch((error) => {
+      console.error(error);
+      alert(error.message);  // ← shows a popup if login fails
+    });
+});
+
+  function showApp() {
+    authContainer.style.display = "none";
+    appContainer.style.display = "block";
   }
 
-  const battery = await navigator.getBattery();
+  const BATTERY_CAPACITY_WH = 50;
+  const UPDATE_INTERVAL = 5 * 60 * 1000;
 
-  startLevel = battery.level;
-  output.style.display = "block";
+  async function trackBattery() {
+  try {
+    const battery = await navigator.getBattery();
+    const user = auth.currentUser;
+    if (!user) return;
 
-  batteryInfo.textContent = `Starting battery level: ${(startLevel * 100).toFixed(0)}%`;
+    const userRef = db.collection("users").doc(user.uid);
+    const snap = await userRef.get();
+    const currentLevel = battery.level;
 
-  // Check again after 5 minutes
-  setTimeout(async () => {
-    const newBattery = await navigator.getBattery();
-    const endLevel = newBattery.level;
+    // Show battery in UI
+    output.style.display = "block";
+    batteryInfo.textContent = `Battery level: ${(currentLevel*100).toFixed(0)}%`;
 
-    const percentUsed = (startLevel - endLevel) * 100;
-    const energyUsed = (percentUsed / 100) * BATTERY_CAPACITY_WH;
-    const lithiumUsed = energyUsed * LITHIUM_PER_WH;
+    if (!snap.exists) {
+      await userRef.set({
+        lastBatteryLevel: currentLevel,
+        totalEnergyUsedWh: 0,
+        lastUpdated: Date.now(),
+        state: document.getElementById("stateSelect").value || null
+      });
+      energyInfo.textContent = `Total energy used: 0 Wh`;
+      return;
+    }
 
-    energyInfo.textContent = `
-      Estimated energy used: ${energyUsed.toFixed(2)} Wh
-      (≈ ${lithiumUsed.toFixed(2)} g lithium)
-    `;
-  }, 5 * 60 * 1000);
+    const data = snap.data();
+    const delta = (data.lastBatteryLevel ?? currentLevel) - currentLevel;
+
+    let newTotal = data.totalEnergyUsedWh;
+
+    if (delta > 0) {
+      const energyUsed = delta * BATTERY_CAPACITY_WH;
+      newTotal += energyUsed;
+
+      await userRef.update({
+        lastBatteryLevel: currentLevel,
+        totalEnergyUsedWh: newTotal,
+        lastUpdated: Date.now()
+      });
+    }
+
+    energyInfo.textContent = `Total energy used: ${newTotal.toFixed(2)} Wh`;
+  } catch (err) {
+    console.error(err);
+    alert("Battery tracking failed: " + err.message);
+  }
+}
+
+  startBtn.addEventListener("click", () => {
+    trackBattery();
+    setInterval(trackBattery, UPDATE_INTERVAL);
+  });
+
 });
