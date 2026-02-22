@@ -1,29 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <title>Battery Impact</title>
   <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Pie chart -->
 </head>
-<body>
-  <div id="authContainer">
-    <h2>Login or Sign Up</h2>
 
+<body>
+  <header>
+    <h1>Battery Impact</h1>
+  </header>
+
+  <div id="authContainer" class="card">
+    <h2>Login or Sign Up</h2>
     <input type="email" id="email" placeholder="Email" />
     <input type="password" id="password" placeholder="Password" />
-    
-    <button id="signupBtn">Sign Up</button>
-    <button id="loginBtn">Log In</button>
+    <button id="loginBtn" class="btn">Log In</button>
+
+    <div id="signupContainer" class="card">
+      <h2>Your Battery Usage</h2>
+      <div id="deviceForm" style="margin: 12px 0; display:flex; flex-direction:column; gap:10px;">
+        <label>
+          Select your device:
+          <select id="deviceType" style="margin-left:8px;">
+            <option value="">-- Select --</option>
+            <option value="Smaller MacBook Air">Smaller MacBook Air</option>
+            <option value="Modern MacBook Air">Modern MacBook Air</option>
+            <option value="14 inch MacBook Pro">14 inch MacBook Pro</option>
+            <option value="16 inch MacBook Pro">16 inch MacBook Pro</option>
+          </select>
+        </label>
+
+        <label>
+          How long have you used this laptop? (years)
+          <input id="deviceAgeYears" type="number" min="0" step="0.5" placeholder="e.g. 2"
+            style="margin-left:8px; width:120px;">
+        </label>
+        <button id="signupBtn" class="btn">Sign Up</button>
+      </div>
+
+    </div>
+
+    <p id="deviceMsg" style="margin:0;"></p>
   </div>
 
-  <div id="appContainer" style="display:none;">
-    <h1>Your Battery Usage Has a Cost</h1>
-    <p>This site estimates the energy and lithium impact of your device's battery usage.</p>
-
-    <button id="startBtn">Start Tracking Battery</button>
+  <div id="appContainer" class="card" style="display:none;">
+    <button id="startBtn" class="btn">Start Tracking Battery</button>
 
     <div id="output" style="display:none;">
-      <p id="batteryInfo"></p>
+      <canvas id="batteryChart" width="200" height="200"></canvas>
       <p id="energyInfo"></p>
     </div>
 
@@ -41,8 +68,10 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-
+  <script src="calculations.js"></script>
   <script src="firebase.js"></script>
   <script src="script.js"></script>
+  <script src="tracker.js"></script>
 </body>
+
 </html>

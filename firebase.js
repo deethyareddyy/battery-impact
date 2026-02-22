@@ -1,13 +1,11 @@
-require('dotenv').config();
-
 const firebaseConfig = {
-  apiKey: process.env.FIREBASE_API_KEY,
-  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.FIREBASE_PROJECT_ID,
-  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.FIREBASE_APP_ID,
-  measurementId: FIREBASE_MEASUREMENT_ID
+  apiKey: "AIzaSyCI5kAkcvXz86r5otl0F4ienyN-R8UTMdo",
+  authDomain: "battery-impact.firebaseapp.com",
+  projectId: "battery-impact",
+  storageBucket: "battery-impact.appspot.com",
+  messagingSenderId: "878622005147",
+  appId: "1:878622005147:web:c0e9b37b43c7972135333e",
+  measurementId: "G-7SEQ1417HJ"
 };
 
 // Initialize Firebase using compat syntax

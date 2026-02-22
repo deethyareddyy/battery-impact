@@ -1,12 +1,54 @@
+/* Green background and header */
 body {
-  font-family: system-ui, sans-serif;
-  max-width: 600px;
-  margin: 60px auto;
-  line-height: 1.6;
+  background-color: #7cba7d;
+  font-family: Arial, sans-serif;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+  padding: 0;
 }
 
-button {
-  padding: 10px 16px;
-  font-size: 16px;
+header h1 {
+  padding: 20px 0;
+  text-align: center;
+  font-size: 3rem;
+  font-weight: bold;
+}
+
+/* Card containers */
+.card {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 20px 30px;
+  border-radius: 15px;
+  margin: 20px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+/* Buttons */
+.btn {
+  background-color: #fff;
+  color: #314e31;
+  border: none;
+  padding: 12px 25px;
+  margin: 5px;
+  border-radius: 10px;
+  font-size: 1rem;
   cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  background-color: #f0f0f0;
+}
+
+/* Pie chart and energy info */
+#output {
+  margin-top: 20px;
+}
+
+#energyInfo {
+  margin-top: 15px;
+  font-weight: bold;
 }
