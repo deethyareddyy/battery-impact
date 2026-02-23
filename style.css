@@ -9,6 +9,17 @@ body {
   padding: 0;
 }
 
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url('../../assets/leaf.jpg');
+  background-size: cover;
+  background-repeat: repeat;
+  opacity: 0.50;  
+  z-index: -1;
+}
+
 header h1 {
   padding: 20px 0;
   text-align: center;
@@ -42,6 +53,7 @@ header h1 {
   margin: 20px;
   text-align: center;
   box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  background-color: #7cba7d;
 }
 .btn {
   background-color: #fff;
